@@ -42,18 +42,18 @@ Required parameters to run the training are:
 
 ```
 python main.py \
-    --data_dir=/data/nerf/nerf_synthetic/lego \
-    --model_dir=./logs \
-    --config=./configs/test_blender_lego.py
+    --data_dir=/data/nerf_synthetic/lego \
+    --model_dir=logs \
+    --config=configs/test_blender_lego.py
 ```
 
 Configuration flag is defined using [`config_flags`](https://github.com/google/ml_collections/tree/master#config-flags), which allows overriding configuration fields, and can be done as follows:
 
 ```
 python main.py \
-    --data_dir=/data/nerf/nerf_synthetic/lego \
-    --model_dir=./logs \
-    --config=./configs/test_blender_lego.py \
+    --data_dir=/data/nerf_synthetic/lego \
+    --model_dir=logs \
+    --config=configs/test_blender_lego.py \
     --config.num_samples=128 \
     --config.i_print=250
 ```
@@ -66,19 +66,26 @@ All these examples were run on an NVIDIA RTX 2080 Ti:
 
 ```
 python main.py \
-    --data_dir=/data/nerf_synthetic_lego \
-    --model_dir=./logs_lego_64 \
-    --config=./configs/test_blender_lego.py
+    --data_dir=/data/nerf_synthetic/lego \
+    --model_dir=logs_lego_64 \
+    --config=configs/test_blender_lego.py
+
+python render.py \
+    --data_dir=/data/nerf_synthetic/lego \
+    --model_dir=logs_lego_64 \
+    --config=configs/test_blender_lego.py \
+    --config.render_factor=0 \
+    --config.testskip=0 \
+    --render_video_set=test
 ```
 
-![lego_64](./assets/lego_rgb_64_200001.gif)
-![lego_64](./assets/lego_rgb_64_still_200001.gif)
+![lego_64](./assets/lego_64.gif)
 
 ```
 python main.py \
     --data_dir=/data/nerf_synthetic_lego \
-    --model_dir=./logs_lego_0 \
-    --config=./configs/test_blender_lego.py \
+    --model_dir=logs_lego_0 \
+    --config=configs/test_blender_lego.py \
     --config.num_importance=0
 
 python render.py \
@@ -91,21 +98,20 @@ python render.py \
     --render_video_set=test
 ```
 
-![lego_0](./assets/lego_rgb_0_200001.gif)
-![lego_0_still](./assets/lego_rgb_0_still_200001.gif)
+![lego_0](./assets/lego_0.gif)
 
 Checkpoint path | Test set PSNR | Test set loss | TensorBoard.dev
 :---------------: | :-------------: | :-------------: |---------------:
-[lego_ckpt_0](https://drive.google.com/drive/folders/1h0r4ePMLueGExAqWJvWKUJORf9ju3XCF?usp=sharing) | 26.544 | 0.00222 | [2020-11-30](https://tensorboard.dev/experiment/WsKI4cYQS8OKDCMPFGPOLA)
-[lego_ckpt_64](https://drive.google.com/drive/folders/1gM3eVfYQgYLsCqUDHxv0I0N3BfgAHlWE?usp=sharing) | 31.779 | 0.00066 | [2020-11-30](https://tensorboard.dev/experiment/WsKI4cYQS8OKDCMPFGPOLA)
+[lego_ckpt_0](https://drive.google.com/drive/folders/1h0r4ePMLueGExAqWJvWKUJORf9ju3XCF?usp=sharing) | 26.544 | 2.2e-3 | [2020-11-30](https://tensorboard.dev/experiment/WsKI4cYQS8OKDCMPFGPOLA)
+[lego_ckpt_64](https://drive.google.com/drive/folders/1gM3eVfYQgYLsCqUDHxv0I0N3BfgAHlWE?usp=sharing) | 31.779 | 6.6e-4 | [2020-11-30](https://tensorboard.dev/experiment/WsKI4cYQS8OKDCMPFGPOLA)
 
 - `vase` scene from the DeepVoxels dataset:
 
 ```
 python main.py \
     --data_dir=/data/deepvoxels \
-    --model_dir=./logs_dv_vase \
-    --config=./configs/test_dvox_greek.py \
+    --model_dir=logs_dv_vase \
+    --config=configs/test_dvox_greek.py \
     --config.shape=vase \
     --config.num_importance=128 \
     --config.precrop_iters=500 \
@@ -122,18 +128,17 @@ python render.py \
     --config.shape=vase \
     --config.num_importance=128 \
     --config.render_factor=0 \
-    --config.testskip=8 \
+    --config.testskip=4 \
     --render_video=False
 ```
 
-![vase_128](./assets/vase_rgb_200001_t8_r2.gif)
-![vase_128_still](./assets/vase_rgb_still_200001_t8_r2.gif)
+![vase_128](./assets/vase_t8_r2.gif)
 
 Checkpoint path | Test set PSNR* | Test set loss* | TensorBoard.dev
 :---------------: | :-------------: | :-------------: |---------------:
-[vase_ckpt](https://drive.google.com/drive/folders/1yFquenIxwG2BfMrHOgiYZ_T9bSG8iUIN?usp=sharing) | 35.324 | 0.00029 | [2020-11-30](https://tensorboard.dev/experiment/HJN9sZNPQ9mknFNuVHkKkA)
+[vase_ckpt](https://drive.google.com/drive/folders/1yFquenIxwG2BfMrHOgiYZ_T9bSG8iUIN?usp=sharing) | 35.328 | 2.9e-4 | [2020-11-30](https://tensorboard.dev/experiment/HJN9sZNPQ9mknFNuVHkKkA)
 
-*Only a subset of the test set has been, given that DeepVoxels has a big amount of images
+*Only a subset of the test set has been used, given that DeepVoxels has a big amount of images
 
 ## Tips and caveats
 
@@ -162,4 +167,3 @@ XLA_FLAGS="--xla_force_host_platform_device_count=4 xla_cpu_multi_thread_eigen=F
 
 - Add LLFF data reader
 - Rendering routines use `lax.map`, which is problematic if image size is not divisible by the number of devices. Try using `lax.fori_loop` with slices and mask padding for a more flexible implementation.
-- Add some trained checkpoints
