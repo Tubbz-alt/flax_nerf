@@ -166,4 +166,5 @@ XLA_FLAGS="--xla_force_host_platform_device_count=4 xla_cpu_multi_thread_eigen=F
 ## TODO
 
 - Add LLFF data reader
-- Rendering routines use `lax.map`, which is problematic if image size is not divisible by the number of devices. Try using `lax.fori_loop` with slices and mask padding for a more flexible implementation.
+- Redo DeepVoxels data reader with `tf.data.Dataset`
+- Most of the processes are done with batches of rays, rewrite everything for a single ray and `vmap/pmap/xmap` as needed (wait for JAX unified map API [JAX#2939](https://github.com/google/jax/issues/2939))
